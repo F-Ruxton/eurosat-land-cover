@@ -4,7 +4,18 @@
 # mounting the cwd to the container's /project directory.
 
 if [ $1 = "bash" ] ; then
-    docker run --gpus=all -v ${pwd}:/project --rm -it -p 8888:8888 tf-lab bash
+    docker run \
+        --gpus=all \
+        -v "$(pwd)/notebooks:/project/notebooks" \
+        -v "$(pwd)/.jupyter/jupyter_notebook_config.py:/project/.jupyter/jupyter_notebook_config.py" \
+        -p 8888:8888 \
+        --rm -it \
+        tf-lab bash
 else
-    docker run --gpus=all -v ${pwd}:/project -p 8888:8888 tf-lab "$@"
+    docker run \
+        --gpus=all \
+        -v "$(pwd)/notebooks:/project/notebooks" \
+        -v "$(pwd)/.jupyter/jupyter_notebook_config.py:/project/.jupyter/jupyter_notebook_config.py" \
+        -p 8888:8888 \
+        tf-lab "$@"
 fi
